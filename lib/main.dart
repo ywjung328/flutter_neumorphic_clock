@@ -47,12 +47,12 @@ class _MyHomePageState extends State<MyHomePage>
   int s1 = 0;
   int s2 = 0;
 
-  int prevH1 = 0;
-  int prevH2 = 0;
-  int prevM1 = 0;
-  int prevM2 = 0;
-  int prevS1 = 0;
-  int prevS2 = 0;
+  bool subscribeH1 = false;
+  bool subscribeH2 = false;
+  bool subscribeM1 = false;
+  bool subscribeM2 = false;
+  bool subscribeS1 = false;
+  bool subscribeS2 = false;
 
   double elevH1 = 3.0;
   double elevH2 = 3.0;
@@ -61,34 +61,26 @@ class _MyHomePageState extends State<MyHomePage>
   double elevS1 = 3.0;
   double elevS2 = 3.0;
 
-  Future setTime(Timer timer) async {
-    print("setTime() called");
-    /*
-    setState(() {
-      dateTime = DateTime.now();
-    });
-    */
+  setTime(Timer timer) async {
+    dateTime = DateTime.now();
 
-    /*
+    subscribeH1 = h1 != dateTime.hour ~/ 10;
+    subscribeH2 = h2 != dateTime.hour % 10;
+    subscribeM1 = m1 != dateTime.minute ~/ 10;
+    subscribeM2 = m2 != dateTime.minute % 10;
+    subscribeS1 = s1 != dateTime.second ~/ 10;
+    subscribeS2 = s2 != dateTime.second % 10;
+
+    await _controller.forward();
+
     h1 = dateTime.hour ~/ 10;
     h2 = dateTime.hour % 10;
     m1 = dateTime.minute ~/ 10;
     m2 = dateTime.minute % 10;
     s1 = dateTime.second ~/ 10;
     s2 = dateTime.second % 10;
-    */
-
-    await _controller.forward();
-
-    dateTime = DateTime.now();
-
-    s1 = dateTime.second ~/ 10;
-    s2 = dateTime.second % 10;
 
     await _controller.reverse();
-
-    prevS1 = s1;
-    prevS2 = s2;
   }
 
   @override
@@ -96,8 +88,19 @@ class _MyHomePageState extends State<MyHomePage>
     super.initState();
 
     _controller = AnimationController(
-        duration: const Duration(milliseconds: 300), vsync: this);
+        duration: const Duration(milliseconds: 250), vsync: this);
+
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        dateTime = DateTime.now();
+
+        s1 = dateTime.second ~/ 10;
+        s2 = dateTime.second % 10;
+      }
+    });
+
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+
     _animation.addListener(() {
       setState(() {});
     });
@@ -111,13 +114,6 @@ class _MyHomePageState extends State<MyHomePage>
     m2 = dateTime.minute % 10;
     s1 = dateTime.second ~/ 10;
     s2 = dateTime.second % 10;
-
-    prevH1 = dateTime.hour ~/ 10;
-    prevH2 = dateTime.hour % 10;
-    prevM1 = dateTime.minute ~/ 10;
-    prevM2 = dateTime.minute % 10;
-    prevS1 = dateTime.second ~/ 10;
-    prevS2 = dateTime.second % 10;
   }
 
   @override
@@ -150,24 +146,20 @@ class _MyHomePageState extends State<MyHomePage>
                       Shadow(
                         color: Colors.grey.shade500,
                         offset: Offset(elevation, elevation) *
-                            (prevS1 == dateTime.second ~/ 10
-                                ? 1.0
-                                : 1.0 - _animation.value),
+                            (subscribeS1 ? 1.0 - _animation.value : 1.0),
                         blurRadius: elevation *
-                            (prevS1 == dateTime.second ~/ 10
-                                ? 1.0
-                                : 1.0 - _animation.value),
+                            10 /
+                            3 *
+                            (subscribeS1 ? 1.0 - _animation.value : 1.0),
                       ),
                       Shadow(
                         color: Colors.white,
                         offset: Offset(-elevation, -elevation) *
-                            (prevS1 == dateTime.second ~/ 10
-                                ? 1.0
-                                : 1.0 - _animation.value),
+                            (subscribeS1 ? 1.0 - _animation.value : 1.0),
                         blurRadius: elevation *
-                            (prevS1 == dateTime.second ~/ 10
-                                ? 1.0
-                                : 1.0 - _animation.value),
+                            10 /
+                            3 *
+                            (subscribeS1 ? 1.0 - _animation.value : 1.0),
                       ),
                     ],
                   ),
@@ -187,38 +179,25 @@ class _MyHomePageState extends State<MyHomePage>
                       Shadow(
                         color: Colors.grey.shade500,
                         offset: Offset(elevation, elevation) *
-                            (prevS2 != dateTime.second % 10
-                                ? 1.0
-                                : 1.0 - _animation.value),
+                            (subscribeS2 ? 1.0 - _animation.value : 1.0),
                         blurRadius: elevation *
-                            (prevS2 != dateTime.second % 10
-                                ? 1.0
-                                : 1.0 - _animation.value),
+                            10 /
+                            3 *
+                            (subscribeS2 ? 1.0 - _animation.value : 1.0),
                       ),
                       Shadow(
                         color: Colors.white,
                         offset: Offset(-elevation, -elevation) *
-                            (prevS2 != dateTime.second % 10
-                                ? 1.0
-                                : 1.0 - _animation.value),
+                            (subscribeS2 ? 1.0 - _animation.value : 1.0),
                         blurRadius: elevation *
-                            (prevS2 != dateTime.second % 10
-                                ? 1.0
-                                : 1.0 - _animation.value),
+                            10 /
+                            3 *
+                            (subscribeS2 ? 1.0 - _animation.value : 1.0),
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-            Text("${_animation.value.toStringAsFixed(2)}"),
-            ElevatedButton(
-              child: Text("Forward"),
-              onPressed: () => _controller.forward(),
-            ),
-            ElevatedButton(
-              child: Text("Reverse"),
-              onPressed: () => _controller.reverse(),
             ),
           ],
         ),
