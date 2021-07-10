@@ -54,13 +54,6 @@ class _MyHomePageState extends State<MyHomePage>
   bool subscribeS1 = false;
   bool subscribeS2 = false;
 
-  double elevH1 = 3.0;
-  double elevH2 = 3.0;
-  double elevM1 = 3.0;
-  double elevM2 = 3.0;
-  double elevS1 = 3.0;
-  double elevS2 = 3.0;
-
   setTime(Timer timer) async {
     dateTime = DateTime.now();
 
@@ -70,6 +63,8 @@ class _MyHomePageState extends State<MyHomePage>
     subscribeM2 = m2 != dateTime.minute % 10;
     subscribeS1 = s1 != dateTime.second ~/ 10;
     subscribeS2 = s2 != dateTime.second % 10;
+
+    print("For some reason, I need this line");
 
     await _controller.forward();
 
@@ -124,20 +119,168 @@ class _MyHomePageState extends State<MyHomePage>
     super.dispose();
   }
 
+  double min(double a, double b) {
+    return a > b ? b : a;
+  }
+
   @override
   Widget build(BuildContext context) {
+    size = min(MediaQuery.of(context).size.width,
+            MediaQuery.of(context).size.height) /
+        10;
+    elevation = size / 24;
+    var backgroundColor = Colors.grey.shade200;
+
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: backgroundColor,
       body: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
-              width: size / 8 * 5,
+              width: size * 0.72,
               child: Center(
                 child: Text(
-                  "$s1",
+                  "$h1  ",
+                  style: TextStyle(
+                    fontFamily: 'NanumSquareRound',
+                    fontWeight: FontWeight.w700,
+                    fontSize: size,
+                    color: Colors.grey.shade200,
+                    shadows: [
+                      Shadow(
+                        color: Colors.grey.shade500,
+                        offset: Offset(elevation, elevation) *
+                            (subscribeH1 ? 1.0 - _animation.value : 1.0),
+                        blurRadius: elevation *
+                            10 /
+                            3 *
+                            (subscribeH1 ? 1.0 - _animation.value : 1.0),
+                      ),
+                      Shadow(
+                        color: Colors.white,
+                        offset: Offset(-elevation, -elevation) *
+                            (subscribeH1 ? 1.0 - _animation.value : 1.0),
+                        blurRadius: elevation *
+                            10 /
+                            3 *
+                            (subscribeH1 ? 1.0 - _animation.value : 1.0),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              width: size * 0.72,
+              child: Center(
+                child: Text(
+                  "$h2 ",
+                  style: TextStyle(
+                    fontFamily: 'NanumSquareRound',
+                    fontWeight: FontWeight.w700,
+                    fontSize: size,
+                    color: Colors.grey.shade200,
+                    shadows: [
+                      Shadow(
+                        color: Colors.grey.shade500,
+                        offset: Offset(elevation, elevation) *
+                            (subscribeH2 ? 1.0 - _animation.value : 1.0),
+                        blurRadius: elevation *
+                            10 /
+                            3 *
+                            (subscribeH2 ? 1.0 - _animation.value : 1.0),
+                      ),
+                      Shadow(
+                        color: Colors.white,
+                        offset: Offset(-elevation, -elevation) *
+                            (subscribeH2 ? 1.0 - _animation.value : 1.0),
+                        blurRadius: elevation *
+                            10 /
+                            3 *
+                            (subscribeH2 ? 1.0 - _animation.value : 1.0),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Container(width: size * 0.24),
+            Container(
+              width: size * 0.72,
+              child: Center(
+                child: Text(
+                  "$m1 ",
+                  style: TextStyle(
+                    fontFamily: 'NanumSquareRound',
+                    fontWeight: FontWeight.w700,
+                    fontSize: size,
+                    color: Colors.grey.shade200,
+                    shadows: [
+                      Shadow(
+                        color: Colors.grey.shade500,
+                        offset: Offset(elevation, elevation) *
+                            (subscribeM1 ? 1.0 - _animation.value : 1.0),
+                        blurRadius: elevation *
+                            10 /
+                            3 *
+                            (subscribeM1 ? 1.0 - _animation.value : 1.0),
+                      ),
+                      Shadow(
+                        color: Colors.white,
+                        offset: Offset(-elevation, -elevation) *
+                            (subscribeM1 ? 1.0 - _animation.value : 1.0),
+                        blurRadius: elevation *
+                            10 /
+                            3 *
+                            (subscribeM1 ? 1.0 - _animation.value : 1.0),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              width: size * 0.72,
+              child: Center(
+                child: Text(
+                  "$m2 ",
+                  style: TextStyle(
+                    fontFamily: 'NanumSquareRound',
+                    fontWeight: FontWeight.w700,
+                    fontSize: size,
+                    color: Colors.grey.shade200,
+                    shadows: [
+                      Shadow(
+                        color: Colors.grey.shade500,
+                        offset: Offset(elevation, elevation) *
+                            (subscribeM2 ? 1.0 - _animation.value : 1.0),
+                        blurRadius: elevation *
+                            10 /
+                            3 *
+                            (subscribeM2 ? 1.0 - _animation.value : 1.0),
+                      ),
+                      Shadow(
+                        color: Colors.white,
+                        offset: Offset(-elevation, -elevation) *
+                            (subscribeM2 ? 1.0 - _animation.value : 1.0),
+                        blurRadius: elevation *
+                            10 /
+                            3 *
+                            (subscribeM2 ? 1.0 - _animation.value : 1.0),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Container(width: size * 0.24),
+            Container(
+              width: size * 0.72,
+              child: Center(
+                child: Text(
+                  "$s1 ",
                   style: TextStyle(
                     fontFamily: 'NanumSquareRound',
                     fontWeight: FontWeight.w700,
@@ -168,10 +311,10 @@ class _MyHomePageState extends State<MyHomePage>
               ),
             ),
             Container(
-              width: size / 8 * 5,
+              width: size * 0.72,
               child: Center(
                 child: Text(
-                  "$s2",
+                  "$s2 ",
                   style: TextStyle(
                     fontFamily: 'NanumSquareRound',
                     fontWeight: FontWeight.w700,
