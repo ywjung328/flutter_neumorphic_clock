@@ -139,7 +139,8 @@ class _MyHomePageState extends State<MyHomePage>
                 child: Text(
                   "$s1",
                   style: TextStyle(
-                    fontWeight: FontWeight.w800,
+                    fontFamily: 'NanumSquareRound',
+                    fontWeight: FontWeight.w700,
                     fontSize: size,
                     color: Colors.grey.shade200,
                     shadows: [
@@ -172,7 +173,8 @@ class _MyHomePageState extends State<MyHomePage>
                 child: Text(
                   "$s2",
                   style: TextStyle(
-                    fontWeight: FontWeight.w800,
+                    fontFamily: 'NanumSquareRound',
+                    fontWeight: FontWeight.w700,
                     fontSize: size,
                     color: Colors.grey.shade200,
                     shadows: [
